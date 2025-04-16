@@ -1,0 +1,16 @@
+FROM golang:1.23.6 AS builder
+
+WORKDIR /app
+
+RUN go install github.com/google/ko@v0.17.1
+
+RUN chmod +x $(go env GOPATH)/bin/ko && cp $(go env GOPATH)/bin/ko /usr/local/bin/ko && ls -lah /usr/local/bin/ko
+
+FROM gcr.io/distroless/base-debian12:latest
+
+COPY --from=builder /usr/local/bin/ko /usr/local/bin/ko
+COPY --from=builder /usr/local/go /usr/local/go
+
+ENV PATH="/usr/local/go/bin:${PATH}"
+
+ENTRYPOINT ["/usr/local/bin/ko"]

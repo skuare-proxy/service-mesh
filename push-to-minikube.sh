@@ -1,16 +1,9 @@
 #!/bin/bash
 set -e
 
-### How to use this script
-#
-# 1) Copy this script to the workspace of any microservice you want to manually push to Minikube
-# 2) Adapt the three variables "user", "host" and "image" to point to your Minikube VM and ythe image name you want to push
-# 3) Run the script
-# 4) Edit the deployment (or other controller) of the local microservice to use the "dev" tag of the image, via "kubectl edit deploy ..."
-
 microservice=service-mesh
 namespace=default
-user=docker #pass=tcuser
+user=docker
 host=$(minikube ip -p zolara)
 image=nexuszolara.me/skuare-proxy/$microservice
 

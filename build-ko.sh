@@ -12,9 +12,9 @@ usage() {
 }
 
 microservice=service-mesh
-user=docker #pass=tcuser
+user=docker
 baseImageTag=v0.1.3
-imageTag=ZOLARA_GIT_TAG
+imageTag=SKUARE_GIT_TAG
 
 while getopts "t:h" option; do
     options+="$option"
@@ -37,5 +37,10 @@ while getopts "t:h" option; do
 done
 
 echo "$microservice build started"
-docker pull gcr.io/distroless/static-debian12
-docker run --privileged --rm -v $(pwd):/workspace/zolara/$microservice -v "/var/run/docker.sock:/var/run/docker.sock:rw" -w /workspace/$microservice gcr.io/distroless/static-debian12 build --local -t $imageTag --base-import-paths
+
+docker build -t local-zolara-ko:latest -f Dockerfile.ko .
+docker run --privileged --rm \
+  -v $(pwd):/workspace/zolara/$microservice \
+  -v "/var/run/docker.sock:/var/run/docker.sock:rw" \
+  -w /workspace/zolara/$microservice \
+  local-zolara-ko:latest build --local -t $imageTag --base-import-paths

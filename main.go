@@ -2,12 +2,10 @@
 package main
 
 import (
-	"io"
 	"log"
 	"net/http"
 	"net/http/httputil"
 	"net/url"
-	"os"
 	"os/exec"
 	"time"
 )

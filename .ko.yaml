@@ -1,0 +1,7 @@
+builds:
+- id: service-mesh
+  dir: ./
+  outputImage: nexuszolara.me/skuare-proxy/service-mesh
+  ldflags:
+  - -s -w
+  

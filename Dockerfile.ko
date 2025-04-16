@@ -2,10 +2,12 @@ FROM golang:1.23.6 AS builder
 
 WORKDIR /app
 
-RUN go install github.com/google/ko@v0.17.1
+RUN CGO_ENABLED=0 go install -ldflags="-s -w" github.com/google/ko@v0.17.1
 
 RUN chmod +x $(go env GOPATH)/bin/ko && cp $(go env GOPATH)/bin/ko /usr/local/bin/ko && ls -lah /usr/local/bin/ko
 
-ENV PATH="/usr/local/go/bin:${PATH}"
+FROM alpine:3.21
+
+COPY --from=builder /usr/local/bin/ko /usr/local/bin/ko
 
 ENTRYPOINT ["/usr/local/bin/ko"]
